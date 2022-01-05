@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+D:\Facultate\1. Master\Semestrul 3\2.Source Code Programming\Obfuscator-Java\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+3136130026.index
+1742096595.index

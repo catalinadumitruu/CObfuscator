@@ -1,0 +1,108 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
+public class Obfuscator {
+
+	public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
+		String obfuscatedFileName = createNewFile("addition.c");
+		removeSingleLineComments("addition.c" , obfuscatedFileName);
+	}
+	
+	 // 1. Remove single line comments
+	static void removeSingleLineComments(String filename, String obfuscatedFileName) throws IOException {
+		BufferedReader reader;
+		FileWriter fileWriter = new FileWriter(obfuscatedFileName, true);
+	    BufferedWriter writer = new BufferedWriter(fileWriter);
+		try {
+			reader = new BufferedReader(new FileReader(filename));
+			String line = reader.readLine();
+			while (line != null) {
+				if(line.contains("//") && line.indexOf("//") == 0) {
+					line = reader.readLine();
+				} else if (line.contains("//") && line.indexOf("//") > 0))) {
+					
+				}
+				System.out.println(line);
+				writer.write(line);
+				writer.newLine();
+				// read next line
+				line = reader.readLine();
+			}
+			reader.close();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 2. Remove multi-line comments
+	static void removeMultiLineComments(String filename, String obfuscatedFileName) throws NoSuchAlgorithmException, IOException {
+		removeSingleLineComments(filename, obfuscatedFileName);
+		BufferedReader reader;
+		
+		FileWriter fileWriter = new FileWriter(obfuscatedFileName, true);
+	    BufferedWriter writer = new BufferedWriter(fileWriter);
+	    
+		int start = 0;
+		int end = 0;
+		try {
+			reader = new BufferedReader(new FileReader(obfuscatedFileName));
+			String line = reader.readLine();
+			while (line != null) {
+				
+				if(line.contains("/*") && line.contains("*/")) {
+					int index = line.indexOf("/*");
+					String newLine = line.substring(0, index) ;
+					System.out.println("........" + newLine);
+					writer.write(newLine);
+					writer.newLine();
+					line = reader.readLine();
+				}
+				
+				if(line.contains("/*")) {
+					line = reader.readLine();
+					while(!line.contains("*/")) {
+						line = reader.readLine();
+					}
+					line = reader.readLine();
+				}
+				
+				System.out.println(line);
+				writer.write(line);
+				writer.newLine();
+				// read next line
+				line = reader.readLine();
+			}
+			reader.close();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	// 3. Remove white spaces and new lines \n
+	static void removeWhiteSpaces(String filename) {
+		
+	}
+	
+	
+	static String createNewFile(String initialFileName) throws IOException, NoSuchAlgorithmException {;
+		int index = initialFileName.indexOf(".");
+		String obfustactedFileName = initialFileName.substring(0, index) + generateTrulyRandomNo() + ".c";
+		
+		 FileWriter myWriter = new FileWriter(obfustactedFileName);
+		 myWriter.close();
+		 return obfustactedFileName;
+	}
+	
+	static int generateTrulyRandomNo() throws NoSuchAlgorithmException {
+		return SecureRandom.getInstanceStrong().nextInt();
+	}
+
+}

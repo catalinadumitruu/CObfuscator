@@ -1,0 +1,84 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
+public class Obfuscator {
+
+	public static void main(String[] args) throws NoSuchAlgorithmException {
+		//removeMultiLineComments("addition.c");
+		writeInFile("addition.c");
+	}
+	
+	 // 1. Remove single line comments
+	static void removeSingleLineComments(String filename) {
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader(filename));
+			String line = reader.readLine();
+			while (line != null) {
+				if(line.contains("//") && line.split("//")[0].isBlank()) {
+					line = reader.readLine();
+				}
+				System.out.println(line);
+				// read next line
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 2. Remove multi-line comments
+	static void removeMultiLineComments(String filename) {
+		BufferedReader reader;
+		int start = 0;
+		int end = 0;
+		try {
+			reader = new BufferedReader(new FileReader(filename));
+			String line = reader.readLine();
+			while (line != null) {
+				
+				if(line.contains("/*") && line.contains("*/")) {
+					System.out.println("........" + line.split("/*")[0]);
+					line = reader.readLine();
+				}
+				
+				if(line.contains("/*")) {
+					line = reader.readLine();
+					while(!line.contains("*/")) {
+						line = reader.readLine();
+					}
+					line = reader.readLine();
+				}
+				
+				System.out.println(line);
+				// read next line
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	// 3. Remove white spaces and new lines \n
+	static void removeWhiteSpaces(String filename) {
+		
+	}
+	
+	
+	static void writeInFile(String initialFileName) throws NoSuchAlgorithmException {;
+		String[] names = initialFileName.split(".")
+		String obfustactedFileName = names[0] + generateTrulyRandomNo() + ".c";
+		System.out.println(obfustactedFileName);
+	}
+	
+	static int generateTrulyRandomNo() throws NoSuchAlgorithmException {
+		return SecureRandom.getInstanceStrong().nextInt();
+	}
+
+}

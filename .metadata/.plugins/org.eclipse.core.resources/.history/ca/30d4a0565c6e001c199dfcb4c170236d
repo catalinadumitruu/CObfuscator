@@ -1,0 +1,102 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.Security;
+
+import org.random.rjgodoy.trng.MH_SecureRandom;
+import org.random.rjgodoy.trng.RjgodoyProvider;
+
+public class Obfuscator {
+
+	public static void main(String[] args) {
+		removeMultiLineComments("addition.c");
+	}
+	
+	 // 1. Remove single line comments
+	static void removeSingleLineComments(String filename) {
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader(filename));
+			String line = reader.readLine();
+			while (line != null) {
+				if(line.contains("//") && line.split("//")[0].isBlank()) {
+					line = reader.readLine();
+				}
+				System.out.println(line);
+				// read next line
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 2. Remove multi-line comments
+	static void removeMultiLineComments(String filename) {
+		BufferedReader reader;
+		int start = -1, end = -1;
+		try {
+			reader = new BufferedReader(new FileReader(filename));
+			String line = reader.readLine();
+			while (line != null) {
+				
+				if(line.contains("/*") && line.contains("*/")) {
+					System.out.println("........" + line.split("/*")[0]);
+					line = reader.readLine();
+				}
+				
+				if(line.contains("/*")) {
+					line = reader.readLine();
+					while(!line.contains("*/")) {
+						line = reader.readLine();
+					}
+					line = reader.readLine();
+				}
+				
+				System.out.println(line);
+				// read next line
+				line = reader.readLine();
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	// 3. Remove white spaces and new lines \n
+	static void removeWhiteSpaces(String filename) {
+		
+	}
+	
+	
+	void writeInFile(String initialFileName) throws NoSuchAlgorithmException {
+		String obfustactedFileName = initialFileName + generateTrulyRandomNo();
+		System.out.println(obfustactedFileName);
+	}
+	
+	int generateTrulyRandomNo() throws NoSuchAlgorithmException {
+		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+		System.setProperty("org.apache.commons.logging.simplelog.showdatetime",           "false");
+		System.setProperty("org.apache.commons.logging.simplelog.showlogname",            "false");
+		System.setProperty("org.apache.commons.logging.simplelog.showShortLogname",       "true");
+		System.setProperty("org.apache.commons.logging.simplelog.log.MH_SecureRandomSpi",  "info");
+		System.setProperty("org.apache.commons.logging.simplelog.log.MH_HttpClient",       "info");
+		System.setProperty("org.apache.commons.logging.simplelog.log.MH_Daemon",           "info");
+		System.setProperty("org.apache.commons.logging.simplelog.log.RjgodoyProvider",     "info");
+		
+		System.setProperty(MH_SecureRandom.USER,"user@example.org");
+		System.setProperty(MH_SecureRandom.TIMEOUT,"2");
+		System.setProperty(MH_SecureRandom.SSL_PROTOCOL,"TLSv1");
+		System.setProperty(MH_SecureRandom.MAX_REDIRECTS,"5");
+		
+		Security.addProvider(new RjgodoyProvider());
+		SecureRandom srandom = SecureRandom.getInstance("MH_TRNG");
+
+		return srandom.nextInt();
+	}
+
+}
