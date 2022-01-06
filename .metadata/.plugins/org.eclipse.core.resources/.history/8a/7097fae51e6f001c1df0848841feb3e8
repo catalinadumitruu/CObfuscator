@@ -134,7 +134,7 @@ public class Obfuscator {
 	
 	static String createNewFile(String initialFileName) throws IOException, NoSuchAlgorithmException {;
 		int index = initialFileName.indexOf(".");
-		String obfustactedFileName = initialFileName.substring(0, index) + generateTrulyRandomNo() + ".c";
+		String obfustactedFileName = initialFileName.substring(0, index) + generateRandom() + ".c";
 		
 		 FileWriter myWriter = new FileWriter(obfustactedFileName);
 		 myWriter.close();

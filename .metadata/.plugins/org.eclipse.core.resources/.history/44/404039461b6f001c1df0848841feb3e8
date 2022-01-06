@@ -3,7 +3,6 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
@@ -12,12 +11,12 @@ import java.security.SecureRandom;
 public class Obfuscator {
 
 	public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
-		String obfuscatedFileName = createNewFile(args[0]);
-		String obfuscatedFileName1 = createNewFile(args[0]);
-		String obfuscatedFileName2 = createNewFile(args[0]);
-		String obfuscatedFileName3 = createNewFile(args[0]);
+		String obfuscatedFileName = createNewFile("addition.c");
+		String obfuscatedFileName1 = createNewFile("addition.c");
+		String obfuscatedFileName2 = createNewFile("addition.c");
+		String obfuscatedFileName3 = createNewFile("addition.c");
 		
-		removeSingleLineComments(args[0] , obfuscatedFileName);
+		removeSingleLineComments("addition.c" , obfuscatedFileName);
 		removeMultiLineComments(obfuscatedFileName , obfuscatedFileName1);
 		
 		if(Files.deleteIfExists(Paths.get(obfuscatedFileName))) {
@@ -132,6 +131,7 @@ public class Obfuscator {
 		}
 	}
 	
+	
 	static String createNewFile(String initialFileName) throws IOException, NoSuchAlgorithmException {;
 		int index = initialFileName.indexOf(".");
 		String obfustactedFileName = initialFileName.substring(0, index) + generateTrulyRandomNo() + ".c";
@@ -143,24 +143,6 @@ public class Obfuscator {
 	
 	static int generateTrulyRandomNo() throws NoSuchAlgorithmException {
 		return SecureRandom.getInstanceStrong().nextInt();
-	}
-	
-	public static int generateRandom() throws IOException
-	{
-	    int num = 0;
-	    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-	    for (int i = 0 ; i < Integer.SIZE ; i++)
-	    {
-	        System.out.println("Flip a fair coin. Enter h for heads, anything else for tails.");
-
-	        if (br.readLine().charAt(0) == 'h')
-	        {
-	            num += Math.pow(2, i);
-	        }
-	    }
-
-	    return num;
 	}
 	
 	static void obfuscateFile(String filename, String obfuscatedFileName) throws IOException {
@@ -211,10 +193,9 @@ public class Obfuscator {
 				append.append(ap, 0, ap.length());
 				ap = "#define ___ main()\n";
 				append.append(ap, 0, ap.length());
-				ap = "#define _ sum\n";
+				ap = "#define (_) sum\n";
 				append.append(ap, 0, ap.length());
-				ap = "#define __________ getchar();\n";
-				append.append(ap, 0, ap.length());
+
 				
 				for(int i = 0; i < words.length; i++) {
 					switch(words[i]) {
@@ -264,10 +245,7 @@ public class Obfuscator {
 						newWords[i] = "___";
 						break;
 					case "sum":
-						newWords[i] = "_";
-						break;
-					case "getchar();":
-						newWords[i] = "__________";
+						newWords[i] = "(_)";
 						break;
 					default: break;
 					}
