@@ -197,9 +197,9 @@ public class Obfuscator {
 			append.append(ap, 0, ap.length());
 			ap = "#define __9 100,\n";
 			append.append(ap, 0, ap.length());
-			ap = "#define _090__ 10,\n";
+			ap = "#define _090__ 10;\n";
 			append.append(ap, 0, ap.length());
-			ap = "#define ____9_1 20,\n";
+			ap = "#define ____9_1 20;\n";
 			append.append(ap, 0, ap.length());
 			ap = "#define n9__9 2000\n";
 			append.append(ap, 0, ap.length());

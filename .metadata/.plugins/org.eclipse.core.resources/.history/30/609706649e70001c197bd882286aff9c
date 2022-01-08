@@ -173,64 +173,64 @@ public class Obfuscator {
 		try {
 			reader = new BufferedReader(new FileReader(filename));
 			String line = reader.readLine();
-			
-			boolean written = false;
-			String ap = "#define _goto int\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define r return\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define _____ char\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define ___goto void\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define _999 0;}\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define _888_ 1,\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define _777 2,\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define _99_ 3\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define _0_0 4\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define _555 5,\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define __9 100,\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define _090__ 10,\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define ____9_1 20,\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define n9__9 2000\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define ___ main(){\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define _ sum\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define __________ getch();\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define __________________ max\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define if_then name);\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define __ i\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define exit_ largest\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define goup return\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define ____________________________ cost\n";
-			append.append(ap, 0, ap.length());
-			ap = "#define a for\n";
-			append.append(ap, 0, ap.length());
-			
 			while (line != null) {
 				if(line.contains("#")) {
-					content.append("\n" + line + "\n");
+					content.append(line+"\n");
 					line = reader.readLine();
 				}
 				String words[] = line.split(" ");
 				String newWords[] = words;
+				
+				String ap = "#define _goto int\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define r return\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define _____ char\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define ___goto void\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define _999 0;\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define _888_ 1,\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define _777 2,\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define _99_ 3\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define _0_0 4\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define _555 5,\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define __9 100,\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define _090__ 10;\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define ____9_1 20;\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define n9__9 2000\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define ___ main()\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define _ sum\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define __________ getch();\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define __________________ max\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define if_then name);\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define - i\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define for >\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define while <\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define exit_; largest\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define goup return\n";
+				append.append(ap, 0, ap.length());
+				ap = "#define ____________________________ cost\n";
+				append.append(ap, 0, ap.length());
 				
 				for(int i = 0; i < words.length; i++) {
 					switch(words[i]) {
@@ -243,7 +243,7 @@ public class Obfuscator {
 					case "void":
 						newWords[i] = "___goto";
 						break;
-					case "0;}":
+					case "0;":
 						newWords[i] = "_999";
 						break;
 					case "1,":
@@ -276,7 +276,7 @@ public class Obfuscator {
 					case "return":
 						newWords[i] = "r";
 						break;
-					case "main(){":
+					case "main()":
 						newWords[i] = "___";
 						break;
 					case "sum":
@@ -292,10 +292,16 @@ public class Obfuscator {
 						newWords[i] = "if_then";
 						break;
 					case "i":
-						newWords[i] = "__";
+						newWords[i] = "-";
+						break;
+					case ">":
+						newWords[i] = "for";
+						break;
+					case "<":
+						newWords[i] = "while";
 						break;
 					case "largest":
-						newWords[i] = "exit_";
+						newWords[i] = "exit_;";
 						break;
 					case "return;":
 						newWords[i] = "goup";
@@ -303,18 +309,11 @@ public class Obfuscator {
 					case "cost":
 						newWords[i] = "____________________________";
 						break;
-					case "for":
-						newWords[i] = "a";
-						break;
 					default: break;
 					}
 				}
 				
-				if(!written) {
-					content.append(append,0,append.length());
-					written = true;
-				}
-			
+				content.append(append,0,append.length());
 				String newLine = String.join(" ", newWords);
 				content.append(newLine);
 				line = reader.readLine();
